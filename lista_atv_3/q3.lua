@@ -27,9 +27,15 @@ end
 
 --metodo verifica se nova jogada e valida 
 function jogo_da_velha:validar_jogada(linha, coluna)
-    if self.jogo[linha][coluna] ~= "o" and self.jogo[linha][coluna] ~= "x" then
+    if linha <= 3 and coluna <= 3 then
+        if self.jogo[linha][coluna] ~= "o" and self.jogo[linha][coluna] ~= "x" then
         
-        return true        
+            return true        
+        end
+    else
+        print("Jogada invalida! \nSua vez de novo")
+        print("\n")
+        return false
     end
     return false
 end
@@ -81,8 +87,8 @@ function jogo_da_velha:vencedor()
     return resposta
 end
 
---metodo verifica se o jogo deu empate
-function jogo_da_velha:empate()
+--metodo verifica se todos as posicoes foram preenchidas
+function jogo_da_velha:todas_posicoes_preenchidas()
     
     local cont = 0
     for i = 1, 3, 1 do
@@ -93,6 +99,14 @@ function jogo_da_velha:empate()
         end
     end
     if cont == 9 then
+        return true
+    end
+    return false
+end
+
+--verifica se o jogo deu empate
+function jogo_da_velha:empate()
+    if jogo_da_velha:todas_posicoes_preenchidas() and jogo_da_velha:vencedor() == false then
         return true
     end
     return false
@@ -119,7 +133,7 @@ function jogo_da_velha:fimDeJogo()
         return false
     end
 
-    if jogo_da_velha:empate() and jogo_da_velha:vencedor() == false then
+    if jogo_da_velha:empate() then
         
         print(jogo_da_velha:mostra_tabuleiro())
         print("\n")
@@ -131,41 +145,43 @@ function jogo_da_velha:fimDeJogo()
 end
 
 
+local function main()
 
-print("Novo jogo:\n")
-print("sim  |  nao")
-inicia = io.read()
+    print("Novo jogo:\n")
+    print("sim  |  nao")
+    inicia = io.read()
 
-if inicia == "sim" then
+    if inicia == "sim" then
 
-    jogo_da_velha:posicoes()
+        jogo_da_velha:posicoes()
 
-    contador = 1
+        contador = 1
     
-    repeat
+        repeat
     
-    print(jogo_da_velha:mostra_tabuleiro())
+        print(jogo_da_velha:mostra_tabuleiro())
 
 
-    print("linha: ")
-    linha = io.read("*number")
-    print("coluna: ")
-    coluna = io.read("*number")
-    print("\n \n \n")
+        print("linha: ")
+        linha = io.read("*number")
+        print("coluna: ")
+        coluna = io.read("*number")
+        print("\n \n \n")
     
-    if jogo_da_velha:validar_jogada(linha, coluna) then
+        if jogo_da_velha:validar_jogada(linha, coluna) then
         
-        if contador % 2 ~= 0 then
-            jogo_da_velha.jogo[linha][coluna] = "o" 
-            contador = contador + 1
-        else if contador % 2 == 0 then
-            jogo_da_velha.jogo[linha][coluna] = "x"
-            contador = contador + 1
+            if contador % 2 ~= 0 then
+                jogo_da_velha.jogo[linha][coluna] = "o" 
+                contador = contador + 1
+            else if contador % 2 == 0 then
+                jogo_da_velha.jogo[linha][coluna] = "x"
+                contador = contador + 1
+            end
+            end
         end
-        end
+        until(jogo_da_velha:fimDeJogo() == true)
+    else
+        print("xau querida!!")
     end
-    until(jogo_da_velha:fimDeJogo() == true)
-else
-    print("xau querida!!")
 end
-
+main()
