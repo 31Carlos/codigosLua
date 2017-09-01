@@ -1,0 +1,1 @@
+print("\n")print("Em Portugues:")print("ola Mundo")print("\nDigite agora em ingles:")r1 = "\nEm Ingles:\n"r2 = r1 .. io.read()print(r2)
